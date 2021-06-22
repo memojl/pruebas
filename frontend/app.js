@@ -1,4 +1,5 @@
 //CRUD
+var edit = false;
 
 //Listar POST
 async function listarPost(){    
@@ -21,6 +22,10 @@ async function listarPost(){
                     <p class="card-text">${body}</p>
                     <a href="${id}" class="btn btn-primary">Ver más</a>
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg${id}">Ver comentarios</button>
+                </div>
+                <div id="${id}" class="card-footer text-center">
+                    <button class="btn btn-primary btnEditar">Editar</button>
+                    <button class="btn btn-danger btnBorrar">Borrar</button>
                 </div>
             </div>
         </div>
@@ -45,6 +50,48 @@ comentarios(id);
     div.innerHTML = content;
 }
 
+//BOTON AGREGAR
+$('.btn-add').click(function(){
+    $("#form1").trigger('reset');    
+});
+
+//BOTON EDITAR
+$('#div-post').on('click','.btnEditar',function(){	
+    const element = $(this)[0].parentElement;
+    const id = $(element).attr('id');//
+    console.log(id);
+  
+    edit = true;
+});
+
+//ELIMINAR POST
+$('#div-post').on('click', '.btnBorrar', function(){
+  const element = $(this)[0].parentElement;
+  const id = $(element).attr('id');//console.log(id);
+  Swal.fire({
+    title: '¿Está seguro de eliminar este Post '+id+'?',
+    text: "¡Está operación no se puede revertir!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+    confirmButtonText: 'Borrar'
+  }).then((result) => {
+    if (result.value) {
+        // Eliminamos el comentario       
+        fetch(`https://jsonplaceholder.typicode.com/posts/${id}`, {
+            method: 'DELETE'
+        });
+        console.log('Borrado Correctamente Fake');
+        listarPost();
+        Swal.fire('¡Eliminado!', 'El producto ha sido eliminado.','success')
+    }
+  })        
+});
+
+
+
+//LISTAR COMENTARIOS
 async function comentarios(PostId){
 const coment = await fetch(`https://jsonplaceholder.typicode.com/posts/${PostId}/comments`);
 const datac = await coment.json();
@@ -53,13 +100,14 @@ let divc = document.getElementById('div-coment'+PostId);
 let contentc = '';
 datac.forEach(itemc => {
     const {id,postId,name,email,body}=itemc;
-        contentc += `<div class="row">
+        contentc += `
+        <div idPost="${PostId}" class="row">
             <div class="col-md-6"><strong>${name}</strong></div>
             <div class="col-md-6">(${email})</div>
             <div class="col-md-12">${body}</div>
             <div id="${id}" class="col-md-12 text-right">
-                <button class="btn btn-primary btnEditar">Editar</button>
-                <button class="btn btn-danger btnBorrar">Borrar</button>
+                <button class="btn btn-primary btnEditarc">Editar</button>
+                <button class="btn btn-danger btnBorrarc">Borrar</button>
             </div>
             <hr>
         </div>`
@@ -68,9 +116,11 @@ divc.innerHTML = contentc;
 }
 
 //ELIMINAR COMENTARIO
-$(document).on('click', '.btnBorrar', function(){
+$(document).on('click', '.btnBorrarc', function(){
   const element = $(this)[0].parentElement;
-  const id = $(element).attr('id'); console.log(id);
+  const elePost = element.parentElement;
+  const id = $(element).attr('id');//console.log(id);
+  const idPost = $(elePost).attr('idPost'); //console.log(idPost);
   Swal.fire({
     title: '¿Está seguro de eliminar el comentario '+id+'?',
     text: "¡Está operación no se puede revertir!",
@@ -81,7 +131,13 @@ $(document).on('click', '.btnBorrar', function(){
     confirmButtonText: 'Borrar'
   }).then((result) => {
     if (result.value) {
-        // Eliminamos el comentario      
+        // Eliminamos el comentario
+        
+        fetch(`https://jsonplaceholder.typicode.com/posts/${idPost}/comments?id=${id}`, {
+            method: 'DELETE'
+        });
+        
+        comentarios(idPost);
         Swal.fire('¡Eliminado!', 'El producto ha sido eliminado.','success')
     }
   })        
