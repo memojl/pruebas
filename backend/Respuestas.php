@@ -1,8 +1,8 @@
+<h3>Respuesta 3</h3>
 <?php
 $myArray = array(13,2,4,35,1);
 $valMax = max($myArray); 
 ?>
-<h3>Respuesta 3</h3>
 <div>
     Valor Más Alto: <input type="number" value="<?php echo $valMax;?>" style="font-size:35px; width:70px;" />
 </div>
@@ -15,14 +15,29 @@ GROUP BY T2.department_name
 ORDER BY T1.department_id ASC
 <hr>
 <h3>Respuesta 5</h3>
+<?php
+$myArray = array(
+    array(1,2,9),
+    array(2,5,3),
+    array(5,1,5));   
+   for ($i = 0; $i < count($myArray); $i++) {
+       for($j = 0; $j<count($myArray[$i]); $j++){
+            $resultado = $myArray[$i][$j] + $myArray[$i][$j];
+            if($resultado<9){
+               echo $myArray[$i][$j];
+            }
+           echo "<br>";           
+       }
+   }
+?>
 <hr>
 <h3>Respuesta 6</h3>
 <?php 
 $myArray = array(1,3,2,0,7,8,1,3,0,6,7,1);
-$n = 12; //$n = count($myArray); 
+$j = 12; //$j = count($myArray); 
 $a = array();
 $b = array();
-for($i=0;$i<$n;$i++){
+for($i=0;$i<$j;$i++){
     if($myArray[$i]!=0){
         $a[]=$myArray[$i];        
     }else{

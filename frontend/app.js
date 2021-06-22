@@ -18,13 +18,12 @@ async function listarPost(){
                 <div class="card-body">
                     <h5 class="card-title">${title}</h5>
                     <p class="card-text">${body}</p>
-                    <a href="#${id}" class="btn btn-primary">Ver más</a>
+                    <a href="${id}" class="btn btn-primary">Ver más</a>
                 </div>
             </div>
         </div>`
         }
-    });
-        
+    });        
     div.innerHTML = content;
 }
 

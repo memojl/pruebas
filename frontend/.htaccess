@@ -1,0 +1,16 @@
+<IfModule mod_rewrite.c>
+# Activar RewriteEngine
+RewriteEngine on
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d 
+# Reescribir la URL solicitada por el usuario
+RewriteRule ^(\w+)/?$ index.html?id=$1
+# RewriteRule ^([0-9]+)\-([a-zA-Z0-9-]*)/?$ index.html?id=$1
+</IfModule>
+
+<FilesMatch "\.(css|ttf|otf|eot|woff|woff2)$">
+  <IfModule mod_headers.c>
+    Header set Access-Control-Allow-Origin "*"
+  </IfModule>
+</FilesMatch>
