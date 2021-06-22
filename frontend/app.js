@@ -13,8 +13,8 @@ async function listarPost(){
                 
         if(id<=6){ //console.log(id);
             content += `
-        <div class="col-lg-4 col-md-12">
-            <div class="card" style="width: 18rem;">
+        <div class="col-lg-4 col-sm-12">
+            <div class="card" style="width: 98%;">
                 <img src="https://cloudvcard.000webhostapp.com/bloques/files/images/photos/sinfoto.png" class="card-img-top" alt="...">
                 <div class="card-body">
                     <h5 class="card-title">${title}</h5>
@@ -57,15 +57,35 @@ datac.forEach(itemc => {
             <div class="col-md-6"><strong>${name}</strong></div>
             <div class="col-md-6">(${email})</div>
             <div class="col-md-12">${body}</div>
-            <div class="col-md-12 text-right">
-                <button class="btn btn-primary">Editar</button>
-                <button class="btn btn-danger">Borrar</button>
+            <div id="${id}" class="col-md-12 text-right">
+                <button class="btn btn-primary btnEditar">Editar</button>
+                <button class="btn btn-danger btnBorrar">Borrar</button>
             </div>
             <hr>
         </div>`
 });
 divc.innerHTML = contentc;
 }
+
+//ELIMINAR COMENTARIO
+$(document).on('click', '.btnBorrar', function(){
+  const element = $(this)[0].parentElement;
+  const id = $(element).attr('id'); console.log(id);
+  Swal.fire({
+    title: '¿Está seguro de eliminar el comentario '+id+'?',
+    text: "¡Está operación no se puede revertir!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+    confirmButtonText: 'Borrar'
+  }).then((result) => {
+    if (result.value) {
+        // Eliminamos el comentario      
+        Swal.fire('¡Eliminado!', 'El producto ha sido eliminado.','success')
+    }
+  })        
+});
 
 function iniciar(){
     listarPost();
