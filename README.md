@@ -1,2 +1,2 @@
 # pruebas
-Prubas frontend y backend
+Pruebas frontend y backend
