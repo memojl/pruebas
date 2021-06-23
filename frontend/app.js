@@ -76,13 +76,40 @@ $('#div-post').on('click','.btnEditar',function(){
 //SUBMIT AGREGAR/EDITAR
 $('#form1').submit(function(e){
   e.preventDefault();
-  var id=$('#id').val();
-  var action = '';
-  console.log(id);
+  let id=$('#id').val(); //console.log(id);
+  let idp = (id!='')?'/'+id:'';
+  let action = (id!='')?'Editado':'Agregado';
+  let metodo='';
+  let postData = {};
+  if(edit==false){
+    metodo = 'POST';
+    postData = {
+      id,
+      title: $('#title').val(),
+      body: $('#body').val(),
+      userId: 1,
+    };
+  }else{
+    metodo = 'PUT';
+    postData = {
+      title: $('#title').val(),
+      body: $('#body').val(),
+      userId: 1,
+    };
+  }
 
-  console.log('Se ha '+action+' el registro');
+  fetch(`https://jsonplaceholder.typicode.com/posts${idp}`, {
+    method: metodo,
+    body: JSON.stringify(postData),
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8',
+    },
+  }).then((response) => response.json())
+  .then((data) => console.log(data));
+
+  console.log('Se ha '+action+' el registro '+id);
   $("#form1").trigger('reset');
-  //$('#exampleModal').modal('hide');
+  $('#exampleModal').modal('hide');
   edit = false;
 });
 
