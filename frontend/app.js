@@ -15,16 +15,16 @@ async function listarPost(){
         if(id<=6){ //console.log(id);
             content += `
         <div class="col-lg-4 col-sm-12">
-            <div class="card" style="width: 98%;">
+            <div idP="${id}" class="card" style="width: 98%;">
                 <img src="https://cloudvcard.000webhostapp.com/bloques/files/images/photos/sinfoto.png" class="card-img-top" alt="...">
                 <div class="card-body">
-                    <h5 class="card-title">${title}</h5>
-                    <p class="card-text">${body}</p>
+                    <h5 id="tit${id}" class="card-title">${title}</h5>
+                    <p id="des${id}" class="card-text">${body}</p>
                     <a href="${id}" class="btn btn-primary">Ver más</a>
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg${id}">Ver comentarios</button>
                 </div>
                 <div id="${id}" class="card-footer text-center">
-                    <button class="btn btn-primary btnEditar">Editar</button>
+                    <button class="btn btn-primary btnEditar" data-toggle="modal" data-target="#exampleModal">Editar</button>
                     <button class="btn btn-danger btnBorrar">Borrar</button>
                 </div>
             </div>
@@ -50,18 +50,40 @@ comentarios(id);
     div.innerHTML = content;
 }
 
-//BOTON AGREGAR
+//BOTON AGREGAR POST
 $('.btn-add').click(function(){
+    const tit_acc = document.querySelector('#exampleModalLabel');
+    tit_acc.innerHTML = 'Agregar';
     $("#form1").trigger('reset');    
 });
 
-//BOTON EDITAR
-$('#div-post').on('click','.btnEditar',function(){	
+//BOTON EDITAR POST
+$('#div-post').on('click','.btnEditar',function(){
+    const tit_acc = document.querySelector('#exampleModalLabel');
+    tit_acc.innerHTML = 'Editar';	
     const element = $(this)[0].parentElement;
-    const id = $(element).attr('id');//
-    console.log(id);
-  
+    const id = $(element).attr('id'); //console.log(id);
+    let tit = $('#tit'+id).text(); //console.log(tit);
+    let des = $('#des'+id).text(); //console.log(des);
+
+    $('#id').val(id);
+    $('#title').val(tit);
+    $('#body').val(des);
+
     edit = true;
+});
+
+//SUBMIT AGREGAR/EDITAR
+$('#form1').submit(function(e){
+  e.preventDefault();
+  var id=$('#id').val();
+  var action = '';
+  console.log(id);
+
+  console.log('Se ha '+action+' el registro');
+  $("#form1").trigger('reset');
+  //$('#exampleModal').modal('hide');
+  edit = false;
 });
 
 //ELIMINAR POST
